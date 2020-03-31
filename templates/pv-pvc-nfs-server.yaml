@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs
+  name: {{.Values.school.Id}}
 spec:
   capacity:
     storage: 10Gi #capacity of the nfs server
   accessModes:
     - ReadWriteMany
   nfs:
-    server: nfs-server.default.svc.cluster.local #cluster ip of nfs-service or <service-name>.<namespace>.svc.cluster.local
+    server: nfs-server.{{.Values.school.Id}}.svc.cluster.local #cluster ip of nfs-service or <service-name>.<namespace>.svc.cluster.local
     path: "/"
 
 ---
@@ -16,6 +16,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: nfs
+  namespace: {{.Values.school.Id}}
 spec:
   accessModes:
     - ReadWriteMany
